@@ -24,72 +24,70 @@ let ties = 0;
 /* DO NOT CHANGE THE CODE ABOVE */
 
 /***************************** HELPER FUNCTIONS ******************************/
-// function subPrint() {
-//   console.log("\nHelp:\n");
-//   console.log("  Type 'r' for Rock");
-//   console.log("  Type 'p' for Paper");
-//   console.log("  Type 's' for Scissors");
-//   console.log("  Type 'q' to quit");
-//   console.log("  Type 'h' for a list of valid commands\n");
-// }
-function printHelp(cmd) {
-
-    // subPrint();
-    console.log("\nHelp:\n");
+function subPrint() {
   console.log("  Type 'r' for Rock");
   console.log("  Type 'p' for Paper");
   console.log("  Type 's' for Scissors");
   console.log("  Type 'q' to quit");
   console.log("  Type 'h' for a list of valid commands\n");
-
+}
+function printHelp(move1) {
+    subPrint();
   }
 
 
-  function getWinner(move1, move2) {
-    // Your code here
+  function getWinner(move1,move2) {
+
+    if (move1 === move2) {
+      // tie
+      console.log("You tie.\n");
+      ties++;
+      return 0
+
+    } else if (VALID_MOVES[move1].winsAgainst === move2) {
+      // win
+      console.log("You win!\n");
+      wins++;
+      return 1
+    } else {
+      // loss
+      console.log("You lose...\n");
+      losses++;
+      return -1
+    }
   }
 
   function getCPUMove() {
-    // Your code here
-  }
+    if (VALID_MOVES[move1]) {
+      const validMoveKeys = Object.keys(VALID_MOVES);
+      const randomIndex = Math.floor(Math.random() * validMoveKeys.length);
+      const move2 = validMoveKeys[randomIndex];
 
-  function processMove(cmd, cpu) {
+  }
+}
+
+  function processMove(move1, move2) {
     // Your code here
   }
 
   /******************************* MAIN FUNCTION *******************************/
   function promptInput(rl) {
     console.log(`${wins} wins - ${losses} losses - ${ties} ties`);
-    rl.question("> ", (cmd) => {
-      cmd = cmd.toLowerCase();
-      if (cmd === "h") {
-      printHelp(cmd);
-    } else if (cmd === "q") {
-      rl.close();
-      return;
-    }
+    rl.question("> ", (move1) => {
+      move1 = move1.toLowerCase();
+      if (move1 === "h") {
+        console.log("\nHelp:\n");
+        printHelp(move1);
+      }
+      else if (move1 === "q") {
+        rl.close();
+        return;
+      }
 
-      if (VALID_MOVES[cmd]) {
-        const validMoveKeys = Object.keys(VALID_MOVES);
-        const randomIndex = Math.floor(Math.random() * validMoveKeys.length);
-        const cpu = validMoveKeys[randomIndex];
-
-        console.log(`You pick ${cmd}, computer picks ${cpu}.`);
-
-        if (cmd === cpu) {
-          // tie
-          console.log("You tie.\n");
-          ties++;
-        } else if (VALID_MOVES[cmd].winsAgainst === cpu) {
-          // win
-          console.log("You win!\n");
-          wins++;
-        } else {
-          // loss
-          console.log("You lose...\n");
-          losses++;
-        }
-      } else {
+        console.log(`You pick ${move1}, computer picks ${move2}.`);
+        getWinner(move1,move2)
+        getCPUMove();
+        if(!VALID_MOVES[move1])  {
         console.log("\nInvalid command.\n");
         console.log("  Type 'r' for Rock");
         console.log("  Type 'p' for Paper");
